@@ -1,0 +1,30 @@
+import pandas as pd
+
+# Load the Iris dataset
+iris_data = pd.read_csv('IRIS.csv')
+
+# Filter data for each species
+setosa_data = iris_data[iris_data['species'] == 'Iris-setosa']
+versicolor_data = iris_data[iris_data['species'] == 'Iris-versicolor']
+virginica_data = iris_data[iris_data['species'] == 'Iris-virginica']
+
+# 1. Display basic statistical details for each species
+print("Basic statistical details for Iris-setosa:")
+print(setosa_data.drop(columns='species').describe())
+
+print("\nBasic statistical details for Iris-versicolor:")
+print(versicolor_data.drop(columns='species').describe())
+
+print("\nBasic statistical details for Iris-virginica:")
+print(virginica_data.drop(columns='species').describe())
+
+# Alternatively, to compute specific percentiles, mean, and std for each species:
+print("\nPercentiles, mean, and standard deviation for each species:")
+
+for species_data, species_name in zip([setosa_data, versicolor_data, virginica_data], 
+                                      ['Iris-setosa', 'Iris-versicolor', 'Iris-virginica']):
+    print(f"\n{species_name}:")
+    species_data_numerical = species_data.drop(columns='species')  # Drop non-numeric columns
+    print(f"Mean:\n{species_data_numerical.mean()}")
+    print(f"Standard Deviation:\n{species_data_numerical.std()}")
+    print(f"Percentiles (25th, 50th, 75th):\n{species_data_numerical.quantile([0.25, 0.50, 0.75])}")
