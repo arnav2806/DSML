@@ -1,0 +1,48 @@
+import pandas as pd
+import numpy as np
+import math
+
+# Load the Iris dataset
+file_path = "/mnt/data/extracted_datasets/Datasets/IRIS.csv"
+iris_data = pd.read_csv(file_path)
+
+# Select numeric features (assuming the dataset contains a 'species' column)
+X = iris_data.drop(columns=['species'])
+
+# Function to calculate Euclidean distance
+def euclidean_distance(p1, p2):
+    return math.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2 + (p1[2] - p2[2]) ** 2 + (p1[3] - p2[3]) ** 2)
+
+# Function to assign points to the nearest centroid
+def assign_clusters(X, centroids):
+    clusters = {0: [], 1: [], 2: []}
+    for i, point in X.iterrows():
+        distances = [euclidean_distance(point, centroids[0]), 
+                    euclidean_distance(point, centroids[1]),
+                    euclidean_distance(point, centroids[2])]
+        cluster = distances.index(min(distances))  # Assign to nearest centroid
+        clusters[cluster].append(point)
+    return clusters
+
+# Function to update centroids
+def update_centroids(clusters):
+    new_centroids = []
+    for cluster in clusters:
+        cluster_points = np.array(clusters[cluster])
+        new_centroids.append(cluster_points.mean(axis=0))  # Mean of points in the cluster
+    return np.array(new_centroids)
+
+# Initialize centroids randomly (select data points as initial centroids)
+np.random.seed(42)  # For reproducibility
+initial_centroids = X.sample(n=3).values  # Randomly select 3 points as initial centroids
+
+# Iterate for 10 iterations
+centroids = initial_centroids
+for iteration in range(10):
+    clusters = assign_clusters(X, centroids)
+    centroids = update_centroids(clusters)
+
+# Print the final centroids after 10 iterations
+print("Final Centroids (K=3):")
+print(centroids)
+
