@@ -1,0 +1,57 @@
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import LabelEncoder
+
+# Load the Lipstick dataset
+data = pd.read_csv('Lipstick.csv')
+
+# Display the dataset (for reference)
+print("Dataset:")
+print(data)
+
+# Preprocessing: Encode categorical variables (Age, Income, Gender, Marital Status, Buys)
+le = LabelEncoder()
+data['Age'] = le.fit_transform(data['Age'])
+data['Income'] = le.fit_transform(data['Income'])
+data['Gender'] = le.fit_transform(data['Gender'])
+data['Ms'] = le.fit_transform(data['Ms'])
+data['Buys'] = le.fit_transform(data['Buys'])
+
+# Split the dataset into features (X) and target variable (y)
+X = data[['Age', 'Income', 'Gender', 'Ms']]
+y = data['Buys']
+
+# Train the Decision Tree Classifier
+dtree = DecisionTreeClassifier()
+dtree.fit(X, y)
+
+# Create a mapping for categorical values to numerical values
+age_mapping = {'<21': 0, '21-35': 1, '>35': 2}
+income_mapping = {'Low': 0, 'Medium': 1, 'High': 2}
+gender_mapping = {'Female': 0, 'Male': 1}
+ms_mapping = {'Single': 0, 'Married': 1}
+
+# Define test cases (Age, Income, Gender, Marital Status)
+test_data = [
+    [age_mapping['<21'], income_mapping['Low'], gender_mapping['Female'], ms_mapping['Married']],  # Age < 21, Income = Low, Gender = Female, Marital Status = Married
+    [age_mapping['>35'], income_mapping['Medium'], gender_mapping['Female'], ms_mapping['Married']],  # Age > 35, Income = Medium, Gender = Female, Marital Status = Married
+    [age_mapping['>35'], income_mapping['Medium'], gender_mapping['Female'], ms_mapping['Married']],  # Age > 35, Income = Medium, Gender = Female, Marital Status = Married
+    [age_mapping['21-35'], income_mapping['Low'], gender_mapping['Male'], ms_mapping['Married']]    # Age = 21-35, Income = Low, Gender = Male, Marital Status = Married
+]
+
+# Make predictions for the test data
+predictions = dtree.predict(test_data)
+
+# Convert predictions back to the original labels (e.g., Buys = Yes/No)
+predictions = le.inverse_transform(predictions)
+
+# Display the results
+test_cases = [
+    "Age < 21, Income = Low, Gender = Female, Marital Status = Married",
+    "Age > 35, Income = Medium, Gender = Female, Marital Status = Married",
+    "Age > 35, Income = Medium, Gender = Female, Marital Status = Married",
+    "Age = 21-35, Income = Low, Gender = Male, Marital Status = Married"
+]
+
+for case, prediction in zip(test_cases, predictions):
+    print(f"Test case: {case} -> Decision (Buys): {prediction}")
