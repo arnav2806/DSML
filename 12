@@ -1,0 +1,30 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the Iris dataset
+iris_data = pd.read_csv('IRIS.csv')
+
+# 1. Create box plots for each feature
+plt.figure(figsize=(12, 8))
+sns.boxplot(data=iris_data.drop(columns='species'))  # Exclude 'species' (categorical)
+plt.title('Box Plots for Each Feature in the Iris Dataset', fontsize=16)
+plt.xlabel('Features', fontsize=12)
+plt.ylabel('Values', fontsize=12)
+plt.show()
+
+# 2. Discussing distributions and identifying outliers
+print("\nOutlier Detection and Feature Analysis:")
+for column in iris_data.drop(columns='species').columns:
+    Q1 = iris_data[column].quantile(0.25)  # 25th percentile
+    Q3 = iris_data[column].quantile(0.75)  # 75th percentile
+    IQR = Q3 - Q1  # Interquartile range
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    # Count outliers
+    outliers = iris_data[(iris_data[column] < lower_bound) | (iris_data[column] > upper_bound)]
+    print(f"\nFeature: {column}")
+    print(f"Lower Bound: {lower_bound:.2f}, Upper Bound: {upper_bound:.2f}")
+    print(f"Number of Outliers: {len(outliers)}")
+    print(f"Outlier Values:\n{outliers[column].values}")
