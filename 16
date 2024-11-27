@@ -1,0 +1,23 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the Titanic dataset
+titanic_data = pd.read_csv('Titanic.csv')
+
+# Display basic information about the dataset
+print("Dataset Info:")
+print(titanic_data.info())
+
+# Display the first few rows of the dataset
+print("\nFirst 5 rows of the dataset:")
+print(titanic_data.head())
+
+# Plot a histogram to check the distribution of the 'fare' column
+plt.figure(figsize=(10, 6))
+sns.histplot(data=titanic_data, x='Fare', kde=True, bins=30, color='blue')
+plt.title('Distribution of Ticket Prices (Fare)', fontsize=16)
+plt.xlabel('Fare', fontsize=12)
+plt.ylabel('Frequency', fontsize=12)
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
