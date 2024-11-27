@@ -1,0 +1,23 @@
+# Given values from the confusion matrix
+TP = 90  # True Positive (Cancer = Yes, Predicted = Yes)
+TN = 9560  # True Negative (Cancer = No, Predicted = No)
+FP = 140  # False Positive (Cancer = No, Predicted = Yes)
+FN = 210  # False Negative (Cancer = Yes, Predicted = No)
+
+# Calculate Accuracy
+accuracy = (TP + TN) / (TP + TN + FP + FN)
+
+# Calculate Error Rate
+error_rate = (FP + FN) / (TP + TN + FP + FN)
+
+# Calculate Precision
+precision = TP / (TP + FP)
+
+# Calculate Recall
+recall = TP / (TP + FN)
+
+# Display results
+print(f"Accuracy: {accuracy:.4f}")
+print(f"Error Rate: {error_rate:.4f}")
+print(f"Precision: {precision:.4f}")
+print(f"Recall: {recall:.4f}")
