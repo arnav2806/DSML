@@ -1,0 +1,23 @@
+# Given values from the confusion matrix
+TP = 1  # True Positive
+TN = 90  # True Negative
+FP = 1  # False Positive
+FN = 8  # False Negative
+
+# Calculate Accuracy
+accuracy = (TP + TN) / (TP + TN + FP + FN)
+
+# Calculate Error Rate
+error_rate = (FP + FN) / (TP + TN + FP + FN)
+
+# Calculate Precision
+precision = TP / (TP + FP)
+
+# Calculate Recall
+recall = TP / (TP + FN)
+
+# Display results
+print(f"Accuracy: {accuracy:.4f}")
+print(f"Error Rate: {error_rate:.4f}")
+print(f"Precision: {precision:.4f}")
+print(f"Recall: {recall:.4f}")
