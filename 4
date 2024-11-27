@@ -1,0 +1,50 @@
+import pandas as pd
+import math
+
+# Load the Lipstick dataset
+data = pd.read_csv('Lipstick.csv')
+
+# Display the dataset
+print("Dataset:")
+print(data)
+
+# Function to calculate entropy
+def calculate_entropy(data, target_column):
+    # Count unique target values
+    counts = data[target_column].value_counts()
+    total = counts.sum()
+    entropy = -sum((count / total) * math.log2(count / total) for count in counts)
+    return entropy
+
+# Function to calculate information gain
+def information_gain(data, feature_column, target_column):
+    total_entropy = calculate_entropy(data, target_column)
+    values = data[feature_column].value_counts()
+    total = values.sum()
+    
+    # Weighted entropy for the feature
+    feature_entropy = 0
+    for value, count in values.items():
+        subset = data[data[feature_column] == value]
+        feature_entropy += (count / total) * calculate_entropy(subset, target_column)
+    
+    # Information gain
+    gain = total_entropy - feature_entropy
+    return gain
+
+# Calculate entropy for the target variable
+target_column = 'Buys'
+entropy_target = calculate_entropy(data, target_column)
+print(f"\nEntropy of the target (Buys): {entropy_target:.4f}")
+
+# Calculate information gain for each feature
+features = [col for col in data.columns if col != target_column]
+gains = {}
+for feature in features:
+    gain = information_gain(data, feature, target_column)
+    gains[feature] = gain
+    print(f"Information Gain for {feature}: {gain:.4f}")
+
+# Determine the root node (feature with highest information gain)
+root_node = max(gains, key=gains.get)
+print(f"\nRoot Node: {root_node}")
