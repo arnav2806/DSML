@@ -1,0 +1,28 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the House Price Prediction dataset
+house_data = pd.read_csv('House Data.csv')
+
+# 1. Ensure we are working with numeric columns only
+numeric_columns = house_data.select_dtypes(include=['float64', 'int64']).columns
+
+# 2. Compute Standard Deviation for each numeric feature
+print("Standard Deviation for each feature:")
+std_devs = house_data[numeric_columns].std()
+print(std_devs)
+
+# 3. Compute Variance for each numeric feature
+print("\nVariance for each feature:")
+variances = house_data[numeric_columns].var()
+print(variances)
+
+# 4. Compute Percentiles (25th, 50th, 75th) for each numeric feature
+print("\nPercentiles (25th, 50th, 75th) for each feature:")
+percentiles = house_data[numeric_columns].quantile([0.25, 0.5, 0.75])
+print(percentiles)
+
+# 5. Create histograms for each numeric feature to visualize the feature distributions
+house_data[numeric_columns].hist(figsize=(12, 10), bins=20)
+plt.suptitle('Histograms for Each Feature', fontsize=16)
+plt.show()
