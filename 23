@@ -1,0 +1,85 @@
+# Let's transcribe the table from the image into a pandas DataFrame and solve the problem step by step.
+
+import pandas as pd
+import numpy as np
+
+# Data from the table in the image
+data = {
+    "Age": ["Young", "Young", "Middle", "Old", "Old", "Old", "Middle", "Young", "Young", "Old", "Old", "Middle", "Middle", "Old", "Old"],
+    "Income": ["High", "High", "High", "Medium", "Low", "Low", "Low", "Medium", "Low", "Medium", "Medium", "Medium", "High", "Medium", "Medium"],
+    "Married": ["No", "No", "No", "No", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "No", "No", "Yes", "Yes"],
+    "Health": ["Fair", "Good", "Fair", "Fair", "Fair", "Good", "Good", "Fair", "Fair", "Fair", "Good", "Good", "Fair", "Fair", "Good"],
+    "Class": ["No", "No", "Yes", "Yes", "Yes", "No", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "No", "No", "No"]
+}
+
+# Creating a DataFrame
+df = pd.DataFrame(data)
+
+# Step 1: Generate the frequency table for the 'Age' attribute
+freq_table = df.groupby(['Age', 'Class']).size().unstack(fill_value=0)
+
+# Calculate total for each Age group
+freq_table['Total'] = freq_table.sum(axis=1)
+
+# Step 2: Calculate the Information Gain
+def entropy(values):
+    """Calculate entropy for a given list of class frequencies."""
+    total = sum(values)
+    return -sum((v/total) * np.log2(v/total) for v in values if v != 0)
+
+# Total entropy of the dataset
+total_class_counts = df['Class'].value_counts()
+total_entropy = entropy(total_class_counts)
+
+# Calculate entropy for each age group
+freq_table['Entropy'] = freq_table.apply(lambda row: entropy([row['No'], row['Yes']]), axis=1)
+
+# Calculate weighted entropy for the split on Age
+freq_table['Weighted_Entropy'] = freq_table['Entropy'] * (freq_table['Total'] / len(df))
+
+# Information gain
+info_gain = total_entropy - freq_table['Weighted_Entropy'].sum()
+
+freq_table, total_entropy, info_gain# Let's transcribe the table from the image into a pandas DataFrame and solve the problem step by step.
+
+import pandas as pd
+import numpy as np
+
+# Data from the table in the image
+data = {
+    "Age": ["Young", "Young", "Middle", "Old", "Old", "Old", "Middle", "Young", "Young", "Old", "Old", "Middle", "Middle", "Old", "Old"],
+    "Income": ["High", "High", "High", "Medium", "Low", "Low", "Low", "Medium", "Low", "Medium", "Medium", "Medium", "High", "Medium", "Medium"],
+    "Married": ["No", "No", "No", "No", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "No", "No", "Yes", "Yes"],
+    "Health": ["Fair", "Good", "Fair", "Fair", "Fair", "Good", "Good", "Fair", "Fair", "Fair", "Good", "Good", "Fair", "Fair", "Good"],
+    "Class": ["No", "No", "Yes", "Yes", "Yes", "No", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "No", "No", "No"]
+}
+
+# Creating a DataFrame
+df = pd.DataFrame(data)
+
+# Step 1: Generate the frequency table for the 'Age' attribute
+freq_table = df.groupby(['Age', 'Class']).size().unstack(fill_value=0)
+
+# Calculate total for each Age group
+freq_table['Total'] = freq_table.sum(axis=1)
+
+# Step 2: Calculate the Information Gain
+def entropy(values):
+    """Calculate entropy for a given list of class frequencies."""
+    total = sum(values)
+    return -sum((v/total) * np.log2(v/total) for v in values if v != 0)
+
+# Total entropy of the dataset
+total_class_counts = df['Class'].value_counts()
+total_entropy = entropy(total_class_counts)
+
+# Calculate entropy for each age group
+freq_table['Entropy'] = freq_table.apply(lambda row: entropy([row['No'], row['Yes']]), axis=1)
+
+# Calculate weighted entropy for the split on Age
+freq_table['Weighted_Entropy'] = freq_table['Entropy'] * (freq_table['Total'] / len(df))
+
+# Information gain
+info_gain = total_entropy - freq_table['Weighted_Entropy'].sum()
+
+freq_table, total_entropy, info_gain
