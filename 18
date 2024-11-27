@@ -1,0 +1,22 @@
+import pandas as pd
+
+# Load the House Price Prediction dataset
+file_path = '/mnt/data/extracted_datasets/Datasets/House Data.csv'
+house_data = pd.read_csv(file_path)
+
+# Inspect the dataset to identify categorical and quantitative variables
+print("Dataset Info:")
+print(house_data.info())
+
+# Assume 'Age Group' is a categorical variable and 'Price' is a quantitative variable
+# If 'Age' exists, categorize it into age groups
+if 'Age' in house_data.columns:
+    house_data['Age Group'] = pd.cut(house_data['Age'], bins=[0, 30, 50, 100], labels=['Under 30', '30-50', 'Above 50'])
+
+# Provide summary statistics for the quantitative variable grouped by the categorical variable
+if 'Age Group' in house_data.columns and 'Price' in house_data.columns:
+    summary_stats = house_data.groupby('Age Group')['Price'].agg(['mean', 'median', 'min', 'max', 'std'])
+    print("\nSummary statistics of Price grouped by Age Group:")
+    print(summary_stats)
+else:
+    print("\nCategorical variable ('Age Group') or quantitative variable ('Price') not found in the dataset.")
