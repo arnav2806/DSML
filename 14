@@ -1,0 +1,22 @@
+import pandas as pd
+
+# Load the COVID vaccine statewise dataset
+covid_data = pd.read_csv('Covid Vaccine Statewise.csv')
+
+# A. Describe the dataset
+print("Dataset Description:")
+print(covid_data.describe(include='all'))  # Includes numeric and non-numeric columns
+
+# B. Number of Males vaccinated
+if 'Male(Individuals Vaccinated)' in covid_data.columns:
+    total_males_vaccinated = covid_data['Male(Individuals Vaccinated)'].sum()
+    print(f"\nTotal number of males vaccinated: {total_males_vaccinated}")
+else:
+    print("\nColumn 'Male(Individuals Vaccinated)' not found in the dataset.")
+
+# C. Number of Females vaccinated
+if 'Female(Individuals Vaccinated)' in covid_data.columns:
+    total_females_vaccinated = covid_data['Female(Individuals Vaccinated)'].sum()
+    print(f"\nTotal number of females vaccinated: {total_females_vaccinated}")
+else:
+    print("\nColumn 'Female(Individuals Vaccinated)' not found in the dataset.")
