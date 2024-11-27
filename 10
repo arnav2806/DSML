@@ -1,0 +1,76 @@
+import math
+
+# Define points
+points_10 = {
+    'P1': [2, 10],
+    'P2': [2, 5],
+    'P3': [8, 4],
+    'P4': [5, 8],
+    'P5': [7, 5],
+    'P6': [6, 4],
+    'P7': [1, 2],
+    'P8': [4, 9]
+}
+
+# Initial centroids
+centroids_10 = {'C1': [2, 10], 'C2': [5, 8], 'C3': [1, 2]}
+
+# Function to calculate Euclidean distance
+def euclidean_distance(p1, p2):
+    return math.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
+
+# Function to assign points to the nearest centroid
+def assign_clusters(points, centroids):
+    clusters = {'C1': [], 'C2': [], 'C3': []}
+    for point_name, point in points.items():
+        dist_to_C1 = euclidean_distance(point, centroids['C1'])
+        dist_to_C2 = euclidean_distance(point, centroids['C2'])
+        dist_to_C3 = euclidean_distance(point, centroids['C3'])
+        
+        # Assign the point to the closest centroid
+        min_distance = min(dist_to_C1, dist_to_C2, dist_to_C3)
+        if min_distance == dist_to_C1:
+            clusters['C1'].append(point_name)
+        elif min_distance == dist_to_C2:
+            clusters['C2'].append(point_name)
+        else:
+            clusters['C3'].append(point_name)
+    
+    return clusters
+
+# Function to update centroids by calculating the mean of assigned points
+def update_centroids(clusters, points):
+    new_centroids = {}
+    for cluster, assigned_points in clusters.items():
+        x_sum = 0
+        y_sum = 0
+        for point_name in assigned_points:
+            x_sum += points[point_name][0]
+            y_sum += points[point_name][1]
+        
+        # Update centroid to the mean of the points in the cluster
+        new_centroids[cluster] = [x_sum / len(assigned_points), y_sum / len(assigned_points)]
+    
+    return new_centroids
+
+# Perform K-Means clustering for 1 iteration
+clusters_10 = assign_clusters(points_10, centroids_10)
+new_centroids_10 = update_centroids(clusters_10, points_10)
+
+# Output the results
+print("Clusters after 1 iteration:", clusters_10)
+print("Updated Centroids:", new_centroids_10)
+
+# Answer questions:
+# 1) Which cluster does P6 belong to?
+p6_cluster_10 = min(['C1', 'C2', 'C3'], key=lambda c: euclidean_distance(points_10['P6'], new_centroids_10[c]))
+print(f"P6 belongs to cluster: {p6_cluster_10}")
+
+# 2) What is the population of a cluster around m3 (C3)?
+cluster_c3_population = len(clusters_10['C3'])
+print(f"Population around C3 (m3): {cluster_c3_population}")
+
+# 3) What are the updated centroids?
+print(f"Updated m1: {new_centroids_10['C1']}")
+print(f"Updated m2: {new_centroids_10['C2']}")
+print(f"Updated m3: {new_centroids_10['C3']}")
