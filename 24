@@ -1,0 +1,23 @@
+import pandas as pd
+
+# Load the Titanic dataset
+titanic_data = pd.read_csv('Titanic.csv')
+
+# Inspect the dataset to identify categorical and quantitative variables
+print("Dataset Info:")
+print(titanic_data.info())
+
+# Fill missing values in the 'Fare' column with the median value
+titanic_data['Fare'].fillna(titanic_data['Fare'].median(), inplace=True)
+
+# Converting 'Fare' to int (from float)
+titanic_data['Fare'] = titanic_data['Fare'].astype(int)
+
+# Check the changes in data types
+print("\nData types after conversion:")
+print(titanic_data.dtypes)
+
+# Check the updated dataset for missing values
+print("\nMissing values in each column after filling:")
+print(titanic_data.isnull().sum())
+
