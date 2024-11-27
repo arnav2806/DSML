@@ -1,0 +1,32 @@
+# Function to assign points to the nearest centroid (for K=4)
+def assign_clusters_k4(X, centroids):
+    clusters = {0: [], 1: [], 2: [], 3: []}
+    for i, point in X.iterrows():
+        distances = [euclidean_distance(point, centroids[0]), 
+                    euclidean_distance(point, centroids[1]),
+                    euclidean_distance(point, centroids[2]),
+                    euclidean_distance(point, centroids[3])]
+        cluster = distances.index(min(distances))  # Assign to nearest centroid
+        clusters[cluster].append(point)
+    return clusters
+
+# Function to update centroids for K=4
+def update_centroids_k4(clusters):
+    new_centroids = []
+    for cluster in clusters:
+        cluster_points = np.array(clusters[cluster])
+        new_centroids.append(cluster_points.mean(axis=0))  # Mean of points in the cluster
+    return np.array(new_centroids)
+
+# Initialize centroids randomly (select data points as initial centroids)
+initial_centroids_k4 = X.sample(n=4).values  # Randomly select 4 points as initial centroids
+
+# Iterate for 10 iterations
+centroids_k4 = initial_centroids_k4
+for iteration in range(10):
+    clusters_k4 = assign_clusters_k4(X, centroids_k4)
+    centroids_k4 = update_centroids_k4(clusters_k4)
+
+# Print the final centroids after 10 iterations
+print("Final Centroids (K=4):")
+print(centroids_k4)
