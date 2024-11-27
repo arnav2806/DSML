@@ -1,0 +1,18 @@
+import pandas as pd
+
+# Load the dataset
+df = pd.read_csv('Telecom Churn.csv')
+
+# Select numeric columns
+selected_attri = df.select_dtypes(include='number')
+
+# Loop through each numeric column and calculate the required statistics
+for feature in selected_attri.columns:
+    print(f"\nStatistics for {feature}:")
+    print(f"Minimum: {selected_attri[feature].min()}")
+    print(f"Maximum: {selected_attri[feature].max()}")
+    print(f"Mean: {selected_attri[feature].mean()}")
+    print(f"Range: {selected_attri[feature].max() - selected_attri[feature].min()}")
+    print(f"Standard Deviation: {selected_attri[feature].std()}")
+    print(f"Variance: {selected_attri[feature].var()}")
+    print(f"Percentiles:\n{selected_attri[feature].quantile([0.25, 0.5, 0.75])}")
