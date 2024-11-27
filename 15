@@ -1,0 +1,54 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the Titanic dataset
+titanic_data = pd.read_csv('Titanic.csv')
+
+# Display basic information about the dataset
+print("Dataset Info:")
+print(titanic_data.info())
+
+# Display the first few rows of the dataset
+print("\nFirst 5 rows of the dataset:")
+print(titanic_data.head())
+
+# 1. Survival count by gender
+plt.figure(figsize=(8, 6))
+sns.countplot(data=titanic_data, x='Survived', hue='Sex', palette='Set2')
+plt.title('Survival Count by Gender')
+plt.xlabel('Survived (0 = No, 1 = Yes)')
+plt.ylabel('Count')
+plt.legend(title='Gender')
+plt.show()
+
+# 2. Survival by Passenger Class
+plt.figure(figsize=(8, 6))
+sns.countplot(data=titanic_data, x='Pclass', hue='Survived', palette='Set1')
+plt.title('Survival Count by Passenger Class')
+plt.xlabel('Passenger Class')
+plt.ylabel('Count')
+plt.legend(title='Survived')
+plt.show()
+
+# 3. Age Distribution of Survivors and Non-Survivors
+plt.figure(figsize=(10, 6))
+sns.histplot(data=titanic_data, x='Age', hue='Survived', kde=True, palette='husl', bins=30)
+plt.title('Age Distribution of Survivors and Non-Survivors')
+plt.xlabel('Age')
+plt.ylabel('Density')
+plt.show()
+
+# 4. Box Plot of Fare by Survival Status
+plt.figure(figsize=(8, 6))
+sns.boxplot(data=titanic_data, x='Survived', y='Fare', palette='coolwarm')
+plt.title('Fare Distribution by Survival Status')
+plt.xlabel('Survived (0 = No, 1 = Yes)')
+plt.ylabel('Fare')
+plt.show()
+
+# 5. Correlation Heatmap for Numerical Features
+plt.figure(figsize=(10, 8))
+sns.heatmap(titanic_data.corr(), annot=True, fmt=".2f", cmap="coolwarm", cbar=True)
+plt.title('Correlation Heatmap for Titanic Dataset')
+plt.show()
