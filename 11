@@ -1,0 +1,15 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the Iris flower dataset
+iris_data = pd.read_csv('IRIS.csv')
+
+# 1. List down the features and their types
+print("Features and their types:")
+print(iris_data.dtypes)
+
+# 2. Create a histogram for each feature
+iris_data.hist(figsize=(10, 10), bins=20)
+plt.suptitle('Histograms for Each Feature', fontsize=16)
+plt.show()
